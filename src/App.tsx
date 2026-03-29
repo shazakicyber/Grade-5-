@@ -99,12 +99,12 @@ export default function App() {
     }
   };
 
-  const speakText = (text: string) => {
+  const speakText = (text: string, rate: number = 0.85) => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.lang = 'fa-IR';
-      utterance.rate = 0.85;
+      utterance.rate = rate;
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
       utterance.onerror = () => setIsSpeaking(false);
@@ -670,15 +670,26 @@ export default function App() {
                     <BookText className="w-5 h-5" />
                     <h4 className="font-bold">متن آیات</h4>
                   </div>
-                  <button 
-                    onClick={() => isSpeaking ? stopSpeaking() : speakText(selectedLesson.arabicText!)}
-                    className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${
-                      isSpeaking ? 'bg-red-500 text-white animate-pulse' : 'bg-blue-600 text-white hover:bg-blue-700'
-                    }`}
-                  >
-                    {isSpeaking ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
-                    {isSpeaking ? 'توقف گفتار' : 'شنیدن متن (دری)'}
-                  </button>
+                  <div className="flex items-center gap-2">
+                    <button 
+                      onClick={() => isSpeaking ? stopSpeaking() : speakText(selectedLesson.arabicText!, 0.6)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                        isSpeaking ? 'bg-red-500 text-white animate-pulse' : 'bg-emerald-600 text-white hover:bg-emerald-700'
+                      }`}
+                    >
+                      <Volume2 className="w-4 h-4" />
+                      راهنمای تلفظ
+                    </button>
+                    <button 
+                      onClick={() => isSpeaking ? stopSpeaking() : speakText(selectedLesson.arabicText!)}
+                      className={`flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold transition-all ${
+                        isSpeaking ? 'bg-red-500 text-white animate-pulse' : 'bg-blue-600 text-white hover:bg-blue-700'
+                      }`}
+                    >
+                      {isSpeaking ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                      {isSpeaking ? 'توقف گفتار' : 'شنیدن متن (دری)'}
+                    </button>
+                  </div>
                 </div>
                 <div className="p-6 bg-gray-50 rounded-3xl border border-gray-100">
                   <p 
